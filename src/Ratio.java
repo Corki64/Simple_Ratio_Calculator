@@ -1,0 +1,74 @@
+public class Ratio {
+    protected int numerator;
+    protected int denominator;
+
+    public Ratio(int top, int bottom) {
+        // pre: bottom != 0
+        // post: constructs a ratio equivalent to top::bottom
+
+        numerator = top;
+        denominator = bottom;
+        reduce();
+    }
+
+    public int getNumerator() {
+        // post: return the numerator of the fraction
+        return numerator;
+    }
+
+    public int getDenominator() {
+        // post: return denominator of the fraction
+        return denominator;
+    }
+
+    public double getValue() {
+        // post: return the double equivalent of the ratio
+        return (double)numerator / (double)denominator;
+    }
+
+    protected void reduce() {
+        //post: numerator and denominator are set so that
+        // the greatest common divisor of the numerator and denominator is 1
+        int divisor = gcd(numerator, denominator);
+        if (denominator < 0) {
+            divisor = -divisor;
+            numerator /= divisor;
+            denominator /= divisor;
+        }
+    }
+
+    public Ratio add(Ratio other) {
+        // pre: other is nonnull
+        // post: return new fraction -- the sum of this and other
+        return new Ratio(this.numerator * other.denominator
+        + this.denominator*other.numerator, 
+                this.denominator * other.denominator);
+    }
+
+    protected static int gcd(int a, int b) {
+        // post: computes the greatest common integer value that divides a and b
+        if (a < 0) {
+            return gcd(-a, b);
+        }
+        if (a == 0) {
+            if (b == 0) {
+                return 1;
+            }
+            else {
+                return b;
+            }
+        }
+
+        if (b < a) {
+            return gcd(b, a);
+            }
+        else {
+            return gcd(b%a, a);
+        }
+    }
+
+    public String toString() {
+        // post: returns a string that represent this fraction
+        return getNumerator() + " / " + getDenominator();
+    }
+}
